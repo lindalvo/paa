@@ -7,15 +7,17 @@ function Lista_Primo ([int]$n) {
         $j = $j + 1
     }
     if ($j -eq $i) {
-        $A.Add($j)
+        $void = $A.Add($j)
       }  
   }
   return $A 
 }
 
-$cont=0
-while ($cont -lt 1) {
-  $valor = Get-Random -Minimum 10 -Maximum 20
-  write-host "Valor: $valor Primos: $(Lista_Primo -n $valor)"
+[int[]]$datapoints =@(0)*101
+$cont=2
+while ($cont -le 100) {
+  $datapoints[$cont] = ((1..5 | Measure-Command -Expression {Lista_Primo -n $cont}).TotalMilliseconds | Measure-Object -Average).Average * 100
   $cont++
 }
+
+Show-Graph -Type Bar -GraphTitle "Desempenho Algoritmo Lista Primos" -XAxisTitle "Valor de N" -YAxisTitle "Tempo Médio (deciseg)" -Datapoints $datapoints

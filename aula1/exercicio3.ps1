@@ -13,9 +13,14 @@ function Primo {
   }
 }
 
-$cont=0
-while ($cont -lt 1000) {
-  $valor = Get-Random -Minimum 0 -Maximum 1000
-  Primo -n $valor
+Install-Module -Name Graphical
+Import-Module -Name Graphical
+$cont=4
+#pega
+[int[]]$datapoints =@(0)*31
+while ($cont -le 30) {
+  $datapoints[$cont] = ((1..5 | Measure-Command -Expression {Primo -n $cont}).TotalMilliseconds | Measure-Object -Average).Average * 100
   $cont++
 }
+
+Show-Graph -Type Bar -GraphTitle "Desempenho Algoritmo Detecta Primos" -XAxisTitle "Valor de N" -YAxisTitle "Tempo Médio (deciseg)" -Datapoints $datapoints
