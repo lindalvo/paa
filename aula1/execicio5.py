@@ -33,10 +33,8 @@ def Insercao(A):
     A[i+1]=chave
   return A
 
-#gerando os Arrays desordenados
-
 Minimo = 10
-Maximo = 501
+Maximo = 1001
 entradas = range(Minimo,Maximo)
 import random
 
@@ -47,6 +45,7 @@ temposSelecao = []
 
 import timeit, functools
 for x in entradas:
+  #gerando os Arrays desordenados com valores de 1 até 100
   Valores = array('i')
   for y in range(1,x+1):
     Valores.append(random.randint(1, 100))
@@ -57,12 +56,13 @@ for x in entradas:
   t = timeit.Timer(functools.partial(Selecao, Valores))
   temposSelecao.append(t.timeit(5))
 
+#Mostrando o gráfico
 import matplotlib.pyplot as plt
 plt.plot(entradas, temposBolha, label="Bolha")
 plt.plot(entradas, temposSelecao, label="Selecao")
 plt.plot(entradas, temposInsercao, label="Insercao")
 plt.title("Tempo de execução de algoritmos de Ordenação em função da quantidade de Elementos no array")
-plt.xlabel("Valor de n")
+plt.xlabel("Quantidade de Elementos no Vetor")
 plt.ylabel("Tempo de execução (segundos)")
 plt.legend()
 plt.grid(True)
