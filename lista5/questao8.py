@@ -102,12 +102,20 @@ class AlgoritmosOrdenacao:
 if __name__ == "__main__":
     Minimo = 10
     Maximo = 10000
-    entradas = range(Minimo,Maximo)
+    entradas = range(Minimo,Maximo,10)
 
     #Coletando os tempos
     temposQuick = []
     temposHeap = []
     temposShell = []
+
+    trocasQuick = []
+    trocasHeap = []
+    trocasShell = []
+
+    comparacoesQuick = []
+    comparacoesHeap = []
+    comparacoesShell = []
 
     import timeit, functools
     for x in entradas:
@@ -127,18 +135,24 @@ if __name__ == "__main__":
         #print("Ordenado pelo Quicksort:", quicksort_array)
         #print(f"comparacoes: {algoritmos.comparacoes}, trocas: {algoritmos.trocas}, Tempo de execução: {algoritmos.tempo_execucao}")
         temposQuick.append(algoritmos.tempo_execucao)
+        trocasQuick.append(algoritmos.trocas)
+        comparacoesQuick.append(algoritmos.comparacoes)
         # Heapsort
         heapsort_array = valores.__copy__()
         algoritmos.heapsort(heapsort_array)
         #print("Ordenado pelo Heapsort:", heapsort_array)
         #print(f"comparacoes: {algoritmos.comparacoes}, trocas: {algoritmos.trocas}, Tempo de execução: {algoritmos.tempo_execucao}")
         temposHeap.append(algoritmos.tempo_execucao)
+        trocasHeap.append(algoritmos.trocas)
+        comparacoesHeap.append(algoritmos.comparacoes)
         # Shellsort
         shellsort_array = valores.__copy__()
         algoritmos.shellsort(shellsort_array)
         #print("Ordenador pelo Shellsort:", shellsort_array)
         #print(f"comparacoes: {algoritmos.comparacoes}, trocas: {algoritmos.trocas}, Tempo de execução: {algoritmos.tempo_execucao}")
         temposShell.append(algoritmos.tempo_execucao)
+        trocasShell.append(algoritmos.trocas)
+        comparacoesShell.append(algoritmos.comparacoes)
 
     #Mostrando o gráfico
     plt.plot(entradas, temposQuick, label="QuickSort")
@@ -151,3 +165,22 @@ if __name__ == "__main__":
     plt.grid(True)
     plt.show()
     
+    plt.plot(entradas, trocasQuick, label="QuickSort")
+    plt.plot(entradas, trocasHeap, label="HeapSort")
+    plt.plot(entradas, trocasShell, label="ShellSort")
+    plt.title("Trocas de elementos nos algoritmos de Ordenação em função da quantidade de Elementos no array")
+    plt.xlabel("Quantidade de Elementos no Vetor")
+    plt.ylabel("Quantidade de trocas")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    plt.plot(entradas, comparacoesQuick, label="QuickSort")
+    plt.plot(entradas, comparacoesHeap, label="HeapSort")
+    plt.plot(entradas, comparacoesShell, label="ShellSort")
+    plt.title("Comparações efetuadas nos algoritmos de Ordenação em função da quantidade de Elementos no array")
+    plt.xlabel("Quantidade de Elementos no Vetor")
+    plt.ylabel("Quantidade de comparações")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
