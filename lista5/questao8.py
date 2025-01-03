@@ -98,11 +98,13 @@ class AlgoritmosOrdenacao:
         
         self.tempo_execucao = time.time() - tempo_inicio
 
+import sys
 # Teste dos algoritmos
 if __name__ == "__main__":
+    sys.setrecursionlimit(10000)
     Minimo = 10
-    Maximo = 10000
-    entradas = range(Minimo,Maximo,10)
+    Maximo = 10010
+    entradas = range(Minimo,Maximo,50)
 
     #Coletando os tempos
     temposQuick = []
@@ -118,6 +120,7 @@ if __name__ == "__main__":
     comparacoesShell = []
 
     import timeit, functools
+    #ordenação normal
     for x in entradas:
     #gerando os Arrays desordenados com valores de 1 até 100
         print("Tamanho do array:", x)
@@ -127,12 +130,14 @@ if __name__ == "__main__":
 
         algoritmos = AlgoritmosOrdenacao()
 
-        #print("Array desordenado:", valores)
-
         # Quicksort
         quicksort_array = valores.__copy__()
         algoritmos.quicksort(quicksort_array)
-        #print("Ordenado pelo Quicksort:", quicksort_array)
+        if not (all(quicksort_array[i] <= quicksort_array[i+1] for i in range(len(quicksort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo Quicksort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo quicksort:", quicksort_array)
+
         #print(f"comparacoes: {algoritmos.comparacoes}, trocas: {algoritmos.trocas}, Tempo de execução: {algoritmos.tempo_execucao}")
         temposQuick.append(algoritmos.tempo_execucao)
         trocasQuick.append(algoritmos.trocas)
@@ -140,7 +145,11 @@ if __name__ == "__main__":
         # Heapsort
         heapsort_array = valores.__copy__()
         algoritmos.heapsort(heapsort_array)
-        #print("Ordenado pelo Heapsort:", heapsort_array)
+        if not (all(heapsort_array[i] <= heapsort_array[i+1] for i in range(len(heapsort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo HeapSort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo HeapSort:", heapsort_array)
+
         #print(f"comparacoes: {algoritmos.comparacoes}, trocas: {algoritmos.trocas}, Tempo de execução: {algoritmos.tempo_execucao}")
         temposHeap.append(algoritmos.tempo_execucao)
         trocasHeap.append(algoritmos.trocas)
@@ -148,7 +157,11 @@ if __name__ == "__main__":
         # Shellsort
         shellsort_array = valores.__copy__()
         algoritmos.shellsort(shellsort_array)
-        #print("Ordenador pelo Shellsort:", shellsort_array)
+        if not (all(shellsort_array[i] <= shellsort_array[i+1] for i in range(len(shellsort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo ShellSort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo ShellSort:", shellsort_array)
+
         #print(f"comparacoes: {algoritmos.comparacoes}, trocas: {algoritmos.trocas}, Tempo de execução: {algoritmos.tempo_execucao}")
         temposShell.append(algoritmos.tempo_execucao)
         trocasShell.append(algoritmos.trocas)
@@ -183,4 +196,128 @@ if __name__ == "__main__":
     plt.ylabel("Quantidade de comparações")
     plt.legend()
     plt.grid(True)
+    plt.show() 
+
+    Maximo = 2310
+    entradas = range(Minimo,Maximo,50)
+    #Zerando os tempos
+    temposQuick.clear()
+    temposHeap.clear()
+    temposShell.clear()
+
+    for x in entradas:
+    #Pior caxo
+        print("Tamanho do array:", x)
+        valores = array('i')
+        for y in range(0,x):
+            valores.append(random.randint(1,100))
+
+        #ordenando em ordem inversa
+        lista = valores.tolist()
+        lista.sort(reverse=True)
+        valores = array('i',lista)
+        #print("Array original:", valores)
+
+        algoritmos = AlgoritmosOrdenacao()
+
+        # Quicksort
+        quicksort_array = valores.__copy__()
+        algoritmos.quicksort(quicksort_array)
+        if not (all(quicksort_array[i] <= quicksort_array[i+1] for i in range(len(quicksort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo Quicksort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo quicksort:", quicksort_array)
+
+        temposQuick.append(algoritmos.tempo_execucao)
+        # Heapsort
+        heapsort_array = valores.__copy__()
+        algoritmos.heapsort(heapsort_array)
+        if not (all(heapsort_array[i] <= heapsort_array[i+1] for i in range(len(heapsort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo HeapSort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo HeapSort:", heapsort_array)
+
+        temposHeap.append(algoritmos.tempo_execucao)
+        # Shellsort
+        shellsort_array = valores.__copy__()
+        algoritmos.shellsort(shellsort_array)
+        if not (all(shellsort_array[i] <= shellsort_array[i+1] for i in range(len(shellsort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo ShellSort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo ShellSort:", shellsort_array)
+
+        temposShell.append(algoritmos.tempo_execucao)
+
+    #Mostrando o gráfico pior caso
+    plt.plot(entradas, temposQuick, label="QuickSort")
+    plt.plot(entradas, temposHeap, label="HeapSort")
+    plt.plot(entradas, temposShell, label="ShellSort")
+    plt.title("Tempo de execução de algoritmos de Ordenação em função da quantidade de Elementos no array em ordem Inversa (Pior caso)")
+    plt.xlabel("Quantidade de Elementos no Vetor")
+    plt.ylabel("Tempo de execução (segundos)")
+    plt.legend()
+    plt.grid(True)
     plt.show()
+
+
+    Maximo = 10010
+    entradas = range(Minimo,Maximo,50)
+    #Zerando os tempos
+    temposQuick.clear()
+    temposHeap.clear()
+    temposShell.clear()
+
+    #melhor caso
+    for x in entradas:
+    #gerando os Arrays em ordem com valores de 1 até 100
+        print("Tamanho do array:", x)
+        valores = array('i')
+        for y in range(0,x):
+            valores.append(random.randint(1,100))
+
+        #ordenando
+        lista = valores.tolist()
+        lista.sort()
+        valores = array('i',lista)
+        #print("Array original:", valores)
+
+        algoritmos = AlgoritmosOrdenacao()
+
+        # Quicksort
+        quicksort_array = valores.__copy__()
+        algoritmos.quicksort(quicksort_array)
+        if not (all(quicksort_array[i] <= quicksort_array[i+1] for i in range(len(quicksort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo Quicksort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo quicksort:", quicksort_array)
+
+        temposQuick.append(algoritmos.tempo_execucao)
+        # Heapsort
+        heapsort_array = valores.__copy__()
+        algoritmos.heapsort(heapsort_array)
+        if not (all(heapsort_array[i] <= heapsort_array[i+1] for i in range(len(heapsort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo HeapSort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo HeapSort:", heapsort_array)
+
+        temposHeap.append(algoritmos.tempo_execucao)
+        # Shellsort
+        shellsort_array = valores.__copy__()
+        algoritmos.shellsort(shellsort_array)
+        if not (all(shellsort_array[i] <= shellsort_array[i+1] for i in range(len(shellsort_array) - 1))):
+            print('\033[31m Erro na ordenação pelo ShellSort: \033[0m')
+            print("Array original:", valores)
+            print("Array ordenado errado pelo ShellSort:", shellsort_array)
+
+        temposShell.append(algoritmos.tempo_execucao)
+
+    #Mostrando o gráfico pior caso
+    plt.plot(entradas, temposQuick, label="QuickSort")
+    plt.plot(entradas, temposHeap, label="HeapSort")
+    plt.plot(entradas, temposShell, label="ShellSort")
+    plt.title("Tempo de execução de algoritmos de Ordenação em função da quantidade de Elementos no array já ordenado (Melhor caso)")
+    plt.xlabel("Quantidade de Elementos no Vetor")
+    plt.ylabel("Tempo de execução (segundos)")
+    plt.legend()
+    plt.grid(True)
+    plt.show()    
